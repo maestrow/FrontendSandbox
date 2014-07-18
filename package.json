@@ -1,0 +1,32 @@
+{
+  "name": "AngularJsSandbox",
+  "version": "0.0.0",
+  "description": "A sandbox to meet with AngularJs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --harmony server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/maestrow/AngularJsSandbox"
+  },
+  "keywords": [
+    "AngularJs",
+    "sandbox"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maestrow/AngularJsSandbox/issues"
+  },
+  "homepage": "https://github.com/maestrow/AngularJsSandbox",
+  "dependencies": {
+    "co-views": "^0.2.0",
+    "ejs": "^1.0.0",
+    "interpolate": "^0.1.0",
+    "koa": "^0.8.1",
+    "koa-route": "^1.1.4",
+    "koa-static": "^1.4.5"
+  }
+}
