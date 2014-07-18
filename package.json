@@ -1,5 +1,5 @@
 {
-  "name": "AngularJsSandbox",
+  "name": "frontend-sandbox",
   "version": "0.0.0",
   "description": "A sandbox to meet with AngularJs",
   "main": "server.js",
