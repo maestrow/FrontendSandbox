@@ -1,9 +1,11 @@
 var views = require('co-views');
-var koa = require('koa');
-var static = require('koa-static');
-var route = require('koa-route');
 var fs = require('fs');
 var ejs = require('ejs');
+// koa
+var koa = require('koa');
+var serve = require('koa-static');
+var route = require('koa-route');
+var rewrite = require('koa-rewrite');
 
 
 // Settings
@@ -11,7 +13,7 @@ var ejs = require('ejs');
 var settings = {
   viewsExt: 'ejs',
   baseDir: __dirname + '/../..',
-	viewsDir: 'views',
+  viewsDir: 'views',
   modulesDir: 'frontend/modules'
 };
 
@@ -25,7 +27,10 @@ var render = views(__dirname + '/views', { ext: settings.viewsExt });
 
 app.use(route.get('/', list));
 app.use(route.get('/show/:id', show));
-app.use(static('.'));
+app.use(rewrite(/^\/resource\/([^\/]+)\/([^\/]+)$/, 'frontend/modules/$1/$2'));
+app.use(serve('.'));
+
+
 
 
 // Helpers
@@ -55,7 +60,7 @@ var getMasterViewData = function (moduleName) {
 };
 
 var getViewFileName = function (viewName) {
-	return settings.baseDir + '/' + settings.viewsDir + '/' + viewName + '.' + settings.viewsExt;
+  return settings.baseDir + '/' + settings.viewsDir + '/' + viewName + '.' + settings.viewsExt;
 }
 
 var existsOverridingView = function (viewName) {
@@ -72,22 +77,19 @@ function *list() {
 }
 
 function *show(moduleName) {
-	var viewName = 'master';
-	if (!existsOverridingView(viewName))
-		this.body = yield render(viewName, getMasterViewData(moduleName))
-	else {
-		var content = fs.readFileSync(getViewFileName(viewName), {encoding: 'utf8'});
-		this.body = ejs.render(content, getMasterViewData(moduleName));
-	}
+  var viewName = 'master';
+  if (!existsOverridingView(viewName))
+    this.body = yield render(viewName, getMasterViewData(moduleName))
+  else {
+    var content = fs.readFileSync(getViewFileName(viewName), {encoding: 'utf8'});
+    this.body = ejs.render(content, getMasterViewData(moduleName));
+  }
 }
 
 exports.start = function (config) {
-	config = config || {};
-	for (p in config)
-		settings[p] = config[p];
+  config = config || {};
+  for (p in config)
+    settings[p] = config[p];
 
-	app.listen(config.port || 4000);
+  app.listen(config.port || 4000);
 }
-
-
-
