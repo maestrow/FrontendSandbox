@@ -90,6 +90,7 @@ exports.start = function (config) {
   config = config || {};
   for (p in config)
     settings[p] = config[p];
-
-  app.listen(config.port || 4000);
+  var port = config.port || 4000;
+  console.log('Listening on http://localhost:' + port);
+  app.listen();
 }
