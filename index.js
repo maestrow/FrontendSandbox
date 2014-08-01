@@ -31,13 +31,7 @@ app.use(rewrite(/^\/resource\/([^\/]+)\/([^\/]+)$/, 'frontend/modules/$1/$2'));
 app.use(serve('.'));
 
 
-
-
 // Helpers
-
-var getLayoutFileName = function (moduleName) {
-  return settings.baseDir + '/' + settings.modulesDir + '/' + moduleName + '/' + moduleName + '.html';
-};
 
 var getScripts = function (moduleName) {
   var moduleFiles = fs.readdirSync(settings.baseDir + '/' + settings.modulesDir + '/' + moduleName);
@@ -50,8 +44,19 @@ var getScripts = function (moduleName) {
 };
 
 var getMasterViewData = function (moduleName) {
-  var path = getLayoutFileName(moduleName);
-  var body = fs.existsSync(path) ? fs.readFileSync(path, {encoding:'utf8'}) : '';
+  var basePath = settings.baseDir + '/' + settings.modulesDir + '/' + moduleName + '/';
+
+  var variants = [
+    basePath + 'index.html',
+    basePath + moduleName + '.html'
+  ];
+
+  var path = variants.find(function(file){
+    return fs.existsSync(file);
+  });
+
+  var body = path ? fs.readFileSync(path, {encoding:'utf8'}) : '';
+
   return {
     title: moduleName,
     scripts: getScripts(moduleName),
