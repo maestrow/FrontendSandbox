@@ -44,11 +44,12 @@ var getScripts = function (moduleName) {
 };
 
 var getMasterViewData = function (moduleName) {
-  var basePath = settings.baseDir + '/' + settings.modulesDir + '/' + moduleName + '/';
+  var basePath = settings.baseDir + '/' + settings.modulesDir + '/';
 
   var variants = [
-    basePath + 'index.html',
-    basePath + moduleName + '.html'
+    basePath + moduleName + '.html',
+    basePath + moduleName + '/' + 'index.html',
+    basePath + moduleName + '/' + moduleName + '.html'
   ];
 
   var path = variants.find(function(file){
@@ -76,8 +77,12 @@ var existsOverridingView = function (viewName) {
 // Controllers
 
 function *list() {
+  var modules = fs.readdirSync(settings.baseDir + '/' + settings.modulesDir).map(function (name) {
+    return name.replace(/\.[^.]*$/, '');
+  });
+
   this.body = yield render('list', {
-    modules: fs.readdirSync(settings.baseDir + '/' + settings.modulesDir)
+    modules: modules
   });
 }
 
