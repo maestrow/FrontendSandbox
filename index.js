@@ -92,5 +92,5 @@ exports.start = function (config) {
     settings[p] = config[p];
   var port = config.port || 4000;
   console.log('Listening on http://localhost:' + port);
-  app.listen();
+  app.listen(port);
 }
