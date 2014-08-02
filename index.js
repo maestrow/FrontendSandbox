@@ -34,7 +34,10 @@ app.use(serve('.'));
 // Helpers
 
 var getScripts = function (moduleName) {
-  var moduleFiles = fs.readdirSync(settings.baseDir + '/' + settings.modulesDir + '/' + moduleName);
+  var path = settings.baseDir + '/' + settings.modulesDir + '/' + moduleName;
+  if (!fs.existsSync(path))
+    return [];
+  var moduleFiles = fs.readdirSync();
 
   return moduleFiles.filter(function (file) {
     return file.match(/\.js$/);
